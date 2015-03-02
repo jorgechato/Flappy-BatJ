@@ -63,7 +63,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'org.jorgechato.draculpy.android/org.jorgechato.draculpy.android.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'org.jorgechato.android/org.jorgechato.android.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.

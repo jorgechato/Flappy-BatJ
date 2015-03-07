@@ -1,21 +1,18 @@
 package org.jorgechato;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jorgechato.managers.ResourceManager;
+import org.jorgechato.screens.Game;
 
-public class DraculApp extends Game {
+public class DraculApp extends com.badlogic.gdx.Game {
 	SpriteBatch batch;
 	Texture img;
 	
 	@Override
 	public void create () {
         ResourceManager.loadRes();
-        setScreen(new Juego());
+        setScreen(new Game());
 	}
 
 	@Override

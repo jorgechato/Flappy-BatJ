@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.math.Rectangle;
 import org.jorgechato.managers.ResourceManager;
 import org.jorgechato.screens.Game;
@@ -39,7 +40,7 @@ public class PipePrefab {
     }
 
     public void randomPosition(){
-        Random ran = new Random();
+        RandomXS128 ran = new RandomXS128();
         int equal = ran.nextInt(120)*scale;
         rDown.y = -equal-160;
         rUp.y = Gdx.graphics.getHeight()-160-equal;

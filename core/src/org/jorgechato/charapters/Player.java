@@ -2,6 +2,7 @@ package org.jorgechato.charapters;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,6 +23,7 @@ public class Player {
     short scale = 1;
     long timePlayer;
     boolean jump, touched;
+    Sound sound;
 
     public Player(Rectangle rectangle) {
         if(Gdx.app.getType()== Application.ApplicationType.Android)
@@ -37,8 +39,8 @@ public class Player {
         textureRegions[2] = new TextureRegion(ResourceManager.getTexture("bat3"));
         animation = new Animation(1/7f,textureRegions);
         animation.setPlayMode(Animation.PlayMode.LOOP);
-        sprite.setPosition(this.rectangle.x,this.rectangle.y);
-        sprite.setSize(53*scale, 46*scale);
+        sprite.setPosition(this.rectangle.x, this.rectangle.y);
+        sprite.setSize(53 * scale, 46 * scale);
     }
 
     public void update(float dt){
@@ -48,6 +50,7 @@ public class Player {
             if (!touched) {
                 jump = true;
                 timePlayer = TimeUtils.millis();
+                soundPlayer("swooshing");
             }
             touched = true;
         }else {
@@ -82,7 +85,10 @@ public class Player {
     }
 
     public void died(Rectangle rectangle) {
-        System.out.println("muerto");
         this.rectangle = rectangle;
+    }
+
+    public void soundPlayer(String key){
+        ResourceManager.getSound(key).play();
     }
 }

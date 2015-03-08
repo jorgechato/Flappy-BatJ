@@ -30,7 +30,7 @@ public class Game implements Screen{
             scale = 4;
 
         b = new SpriteBatch();
-        player = new Player(new Rectangle(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.5f, 53,46));
+        player = new Player(new Rectangle(Gdx.graphics.getWidth()*0.5f-Gdx.graphics.getWidth()*0.18f,Gdx.graphics.getHeight()*0.5f+Gdx.graphics.getHeight()*0.25f, 53,46));
         background = ResourceManager.getTexture("background");
         footer = ResourceManager.getTexture("footer");
         pipePrefab = new Array<>();
@@ -62,7 +62,6 @@ public class Game implements Screen{
         player.draw(b);
         b.end();
         shapeRenderer.setAutoShapeType(true);
-        shapeRenderer.setProjectionMatrix(b.getProjectionMatrix());
         shapeRenderer.begin();
         for (PipePrefab pipePrefab1 : pipePrefab) {
             shapeRenderer.rect(0,0,pipePrefab1.rDown.x,pipePrefab1.rDown.y);
@@ -76,7 +75,7 @@ public class Game implements Screen{
         for (PipePrefab pipePrefab1 : pipePrefab){
             if (pipePrefab1.rUp.overlaps(player.rectangle) || pipePrefab1.rDown.overlaps(player.rectangle)
                     || player.rectangle.y < 112*scale-112 || player.rectangle.y > Gdx.graphics.getHeight()){
-                player.died(new Rectangle(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.5f, 53,46));
+                player.died(new Rectangle(Gdx.graphics.getWidth()*0.5f-Gdx.graphics.getWidth()*0.18f,Gdx.graphics.getHeight()*0.5f+Gdx.graphics.getHeight()*0.25f, 53*scale,46*scale));
             }
         }
     }

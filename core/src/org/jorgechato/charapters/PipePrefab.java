@@ -27,12 +27,14 @@ public class PipePrefab {
         rDown = new Rectangle(Gdx.graphics.getWidth() , -160, 208, 320*scale);
         rUp = new Rectangle(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()-160, 208, 320*scale);
         up = new Sprite(ResourceManager.getTexture("pipe"));
-        up.flip(false,true);
-        up.setSize(52*scale,320*scale);
         down = new Sprite(ResourceManager.getTexture("pipe"));
-        down.setSize(52*scale,320*scale);
-        up.setPosition(rUp.x, rUp.y);
-        down.setPosition(rDown.x, rDown.y);
+        up.flip(false,true);
+        up.setSize(rUp.width, rUp.height);
+        down.setSize(rDown.width, rDown.height);
+        up.setX(rUp.x);
+        up.setY(rUp.y);
+        down.setX(rDown.x);
+        down.setY(rDown.y);
         randomPosition();
     }
 

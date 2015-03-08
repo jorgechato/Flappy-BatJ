@@ -30,8 +30,6 @@ public class Player {
         stateTime = 0;
         timePlayer = 0;
         this.rectangle = rectangle;
-        this.rectangle.x -= rectangle.width*scale*1.5f;
-        this.rectangle.y -= rectangle.height*0.5f*scale;
         sprite = new Sprite();
         textureRegions = new TextureRegion[3];
         textureRegions[0] = new TextureRegion(ResourceManager.getTexture("bat1"));
@@ -40,12 +38,12 @@ public class Player {
         animation = new Animation(1/7f,textureRegions);
         animation.setPlayMode(Animation.PlayMode.LOOP);
         sprite.setPosition(this.rectangle.x,this.rectangle.y);
+        sprite.setSize(53*scale, 46*scale);
     }
 
     public void update(float dt){
         stateTime += dt;
         sprite.setRegion(animation.getKeyFrame(stateTime));
-        sprite.setSize(53*scale, 46*scale);
         if (Gdx.input.isTouched()){
             if (!touched) {
                 jump = true;
@@ -86,7 +84,5 @@ public class Player {
     public void died(Rectangle rectangle) {
         System.out.println("muerto");
         this.rectangle = rectangle;
-        this.rectangle.x -= rectangle.width* scale*1.5f;
-        this.rectangle.y -= rectangle.height*0.5f*scale;
     }
 }

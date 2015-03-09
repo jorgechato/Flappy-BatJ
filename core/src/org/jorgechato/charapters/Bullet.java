@@ -33,7 +33,7 @@ public class Bullet {
 
     private void random() {
         RandomXS128 ran = new RandomXS128();
-        rectangle.y -= ran.nextInt(Gdx.graphics.getHeight()-(120+53*scale))-53*scale;
+        rectangle.y -= ran.nextInt(Gdx.graphics.getHeight()-(120+53*scale))+(53*scale)*2;
     }
 
     public void draw(SpriteBatch sb){

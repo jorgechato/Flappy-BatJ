@@ -25,7 +25,7 @@ public class PipePrefab {
 
         rDown = new Rectangle(Gdx.graphics.getWidth() , -160, 208, 320*scale);
         rUp = new Rectangle(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()-160, 208, 320*scale);
-        plusScore = new Rectangle(Gdx.graphics.getWidth()+(208*0.1f),0,1,Gdx.graphics.getHeight());
+        plusScore = new Rectangle(Gdx.graphics.getWidth()+(208*0.5f),0,1,Gdx.graphics.getHeight());
         up = new Sprite(ResourceManager.getTexture("pipe"));
         down = new Sprite(ResourceManager.getTexture("pipe"));
         up.flip(false,true);

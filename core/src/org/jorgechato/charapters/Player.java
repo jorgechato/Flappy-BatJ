@@ -84,8 +84,8 @@ public class Player {
         sprite.setPosition(rectangle.x,rectangle.y);
     }
 
-    public void died(Rectangle rectangle) {
-        this.rectangle = rectangle;
+    public void died() {
+        soundPlayer("hit");
     }
 
     public void soundPlayer(String key){

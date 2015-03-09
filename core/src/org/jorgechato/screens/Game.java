@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import org.jorgechato.DraculApp;
 import org.jorgechato.charapters.Bullet;
 import org.jorgechato.charapters.PipePrefab;
 import org.jorgechato.charapters.Player;
@@ -29,6 +30,13 @@ public class Game implements Screen{
     short scale = 1;
     public int score = 0;
     PipePrefab pipePrefabOld;
+    final DraculApp draculApp;
+    int bulletLevel = 8;
+
+    public Game(DraculApp draculApp) {
+        this.draculApp = draculApp;
+        Timer.instance().clear();
+    }
 
     @Override
     public void show() {
@@ -57,7 +65,7 @@ public class Game implements Screen{
             public void run() {
                 bullet.add(new Bullet());
             }
-        },5,8);
+        },5,bulletLevel);
 
         Timer.schedule(new Timer.Task() {
             @Override
@@ -86,16 +94,14 @@ public class Game implements Screen{
         for (Bullet bullet1 : bullet)
             bullet1.draw(b);
 
-        if(Gdx.app.getType()== Application.ApplicationType.Android)
-            b.draw(footer, 0, -112, Gdx.graphics.getWidth(), 112 * scale);
-        else
-            b.draw(footer, 0, -112, Gdx.graphics.getWidth(), 112 * scale);
+        b.draw(footer, 0, -112, Gdx.graphics.getWidth(), 112 * scale);
 
         for (Pokeball pokeball1 : pokeball)
             pokeball1.draw(b);
 
         player.draw(b);
-        b.end();/*
+        b.end();
+        /*
         shapeRenderer.setAutoShapeType(true);
         shapeRenderer.begin();
         for (PipePrefab pipePrefab1 : pipePrefab) {
@@ -110,12 +116,17 @@ public class Game implements Screen{
         for (PipePrefab pipePrefab1 : pipePrefab){
             if (pipePrefab1.rUp.overlaps(player.rectangle) || pipePrefab1.rDown.overlaps(player.rectangle)
                     || player.rectangle.y < 112*scale-112 || player.rectangle.y > Gdx.graphics.getHeight()){
-                player.died(new Rectangle(Gdx.graphics.getWidth()*0.5f-Gdx.graphics.getWidth()*0.18f,Gdx.graphics.getHeight()*0.5f+Gdx.graphics.getHeight()*0.25f, 53*scale,46*scale));
-                player.soundPlayer("hit");
+                player.died();
+                dispose();
+                draculApp.setScreen(new MainMenu(draculApp));
             }else if (pipePrefab1.plusScore.overlaps(player.rectangle) && !pipePrefab1.equals(pipePrefabOld)) {
                 score++;
                 ResourceManager.getSound("point").play();
                 pipePrefabOld = pipePrefab1;
+                if (score % 5 == 0){
+                    if (bulletLevel > 1)
+                        bulletLevel = 1;
+                }
             }
         }
 

@@ -23,7 +23,6 @@ public class Player {
     short scale = 1;
     long timePlayer;
     boolean jump, touched;
-    Sound sound;
 
     public Player(Rectangle rectangle) {
         if(Gdx.app.getType()== Application.ApplicationType.Android)
@@ -41,6 +40,22 @@ public class Player {
         animation.setPlayMode(Animation.PlayMode.LOOP);
         sprite.setPosition(this.rectangle.x, this.rectangle.y);
         sprite.setSize(53 * scale, 46 * scale);
+    }
+
+    public Player() {
+        if(Gdx.app.getType()== Application.ApplicationType.Android)
+            scale = 4;
+
+        sprite = new Sprite();
+        textureRegions = new TextureRegion[3];
+        textureRegions[0] = new TextureRegion(ResourceManager.getTexture("bat1"));
+        textureRegions[1] = new TextureRegion(ResourceManager.getTexture("bat2"));
+        textureRegions[2] = new TextureRegion(ResourceManager.getTexture("bat3"));
+        animation = new Animation(1/7f,textureRegions);
+        animation.setPlayMode(Animation.PlayMode.LOOP);
+        sprite.setSize(53*scale, 46*scale);
+
+        sprite.setPosition(Gdx.graphics.getWidth() * 0.5f - (sprite.getHeight() * 0.85f), Gdx.graphics.getHeight() * 0.4f);
     }
 
     public void update(float dt){
@@ -61,11 +76,9 @@ public class Player {
             jump = false;
 
         if (jump) {
-//            if (sprite.getRotation() < 30)
             sprite.setRotation(5);
             vy = gravity;
         }else{
-//            if (sprite.getRotation() > -30)
             sprite.setRotation(-20);
             vy = -gravity;
         }
@@ -82,6 +95,17 @@ public class Player {
         sprite.flip(true,false);
         sprite.draw(sb);
         sprite.setPosition(rectangle.x,rectangle.y);
+    }
+
+    public void instructionDraw(SpriteBatch sb){
+        sprite.flip(true,false);
+        sprite.draw(sb);
+        sprite.setPosition(Gdx.graphics.getWidth() * 0.5f - (Gdx.graphics.getWidth() * 0.10f), Gdx.graphics.getHeight() * 0.5f + (Gdx.graphics.getWidth() * 0.15f) + 80 * scale);
+    }
+
+    public void instructionUpdate(float dt){
+        stateTime += dt;
+        sprite.setRegion(animation.getKeyFrame(stateTime));
     }
 
     public void died() {

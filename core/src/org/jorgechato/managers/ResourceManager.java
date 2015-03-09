@@ -24,6 +24,11 @@ public class ResourceManager {
         textures.put("pokeball", new Texture(Gdx.files.internal("textures/pokeball.png")));
         textures.put("pipe", new Texture(Gdx.files.internal("textures/pipe.png")));
         textures.put("play", new Texture(Gdx.files.internal("textures/play.png")));
+        textures.put("tap", new Texture(Gdx.files.internal("textures/instructions.png")));
+        textures.put("score", new Texture(Gdx.files.internal("textures/score.png")));
+        textures.put("btscore", new Texture(Gdx.files.internal("textures/btscore.png")));
+        textures.put("live", new Texture(Gdx.files.internal("textures/live.png")));
+        textures.put("dead", new Texture(Gdx.files.internal("textures/dead.png")));
 
         sound = new HashMap<>();
         sound.put("hit", Gdx.audio.newSound(Gdx.files.internal("sounds/sfx_hit.ogg")));

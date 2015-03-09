@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,6 +17,7 @@ import org.jorgechato.charapters.PipePrefab;
 import org.jorgechato.charapters.Player;
 import org.jorgechato.charapters.Pokeball;
 import org.jorgechato.managers.ResourceManager;
+import org.jorgechato.util.Live;
 
 
 public class Game implements Screen{
@@ -28,10 +30,12 @@ public class Game implements Screen{
     public static Array<Pokeball> pokeball;
     ShapeRenderer shapeRenderer;
     short scale = 1;
-    public int score = 0;
+    public int score = 0, lives = 3;
     PipePrefab pipePrefabOld;
     final DraculApp draculApp;
     int bulletLevel = 8;
+    static BitmapFont font;
+    Live[] live;
 
     public Game(DraculApp draculApp) {
         this.draculApp = draculApp;
@@ -43,8 +47,15 @@ public class Game implements Screen{
         if(Gdx.app.getType()== Application.ApplicationType.Android)
             scale = 4;
 
+        live = new Live[3];
+        live[0] = new Live(36,36*2);
+        live[1] = new Live(36+6+36*scale*.8f,36*2);
+        live[2] = new Live(36+6+6+36*scale*.8f*2,36*2);
+
+        font = new BitmapFont(Gdx.files.internal("font/text.fnt"));
+        font.setScale(scale*0.5f, scale*0.5f);
         b = new SpriteBatch();
-        player = new Player(new Rectangle(Gdx.graphics.getWidth()*0.5f-Gdx.graphics.getWidth()*0.18f,Gdx.graphics.getHeight()*0.5f+Gdx.graphics.getHeight()*0.25f, 53,46));
+        player = new Player(new Rectangle(Gdx.graphics.getWidth()*0.5f-Gdx.graphics.getWidth()*0.18f,Gdx.graphics.getHeight()*0.5f+Gdx.graphics.getHeight()*0.25f, 53*scale-53,46*scale-46));
         background = ResourceManager.getTexture("background");
         footer = ResourceManager.getTexture("footer");
 
@@ -100,6 +111,10 @@ public class Game implements Screen{
             pokeball1.draw(b);
 
         player.draw(b);
+        font.draw(b, "" + score, Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()-25*scale);
+        live[0].sprite.draw(b);
+        live[1].sprite.draw(b);
+        live[2].sprite.draw(b);
         b.end();
         /*
         shapeRenderer.setAutoShapeType(true);
@@ -116,9 +131,7 @@ public class Game implements Screen{
         for (PipePrefab pipePrefab1 : pipePrefab){
             if (pipePrefab1.rUp.overlaps(player.rectangle) || pipePrefab1.rDown.overlaps(player.rectangle)
                     || player.rectangle.y < 112*scale-112 || player.rectangle.y > Gdx.graphics.getHeight()){
-                player.died();
-                dispose();
-                draculApp.setScreen(new MainMenu(draculApp));
+                die();
             }else if (pipePrefab1.plusScore.overlaps(player.rectangle) && !pipePrefab1.equals(pipePrefabOld)) {
                 score++;
                 ResourceManager.getSound("point").play();
@@ -134,7 +147,19 @@ public class Game implements Screen{
             if (bullet1.rectangle.overlaps(player.rectangle)){
                 player.soundPlayer("hit");
                 bullet1.destroy();
+                lives--;
+                live[lives].sprite.setTexture(ResourceManager.getTexture("dead"));
+                if (lives < 0)
+                    die();
+
             }
+    }
+
+    private void die() {
+        player.died();
+        dispose();
+        font.dispose();
+        draculApp.setScreen(new MainMenu(draculApp));
     }
 
     @Override

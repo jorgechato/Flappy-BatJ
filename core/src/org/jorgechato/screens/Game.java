@@ -27,6 +27,8 @@ public class Game implements Screen{
     public static Array<Pokeball> pokeball;
     ShapeRenderer shapeRenderer;
     short scale = 1;
+    public int score = 0;
+    PipePrefab pipePrefabOld;
 
     @Override
     public void show() {
@@ -110,6 +112,10 @@ public class Game implements Screen{
                     || player.rectangle.y < 112*scale-112 || player.rectangle.y > Gdx.graphics.getHeight()){
                 player.died(new Rectangle(Gdx.graphics.getWidth()*0.5f-Gdx.graphics.getWidth()*0.18f,Gdx.graphics.getHeight()*0.5f+Gdx.graphics.getHeight()*0.25f, 53*scale,46*scale));
                 player.soundPlayer("hit");
+            }else if (pipePrefab1.plusScore.overlaps(player.rectangle) && !pipePrefab1.equals(pipePrefabOld)) {
+                score++;
+                ResourceManager.getSound("point").play();
+                pipePrefabOld = pipePrefab1;
             }
         }
 

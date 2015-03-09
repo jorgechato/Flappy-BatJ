@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import org.jorgechato.managers.ResourceManager;
 import org.jorgechato.screens.Game;
 
-import java.util.Random;
-
 
 /**
  * Created by Orggue on 07/03/15.
@@ -18,7 +16,7 @@ import java.util.Random;
 public class PipePrefab {
     float vx = 300;
     Sprite up, down;
-    public Rectangle rUp, rDown;
+    public Rectangle rUp, rDown, plusScore;
     short scale = 1;
 
     public PipePrefab() {
@@ -27,6 +25,7 @@ public class PipePrefab {
 
         rDown = new Rectangle(Gdx.graphics.getWidth() , -160, 208, 320*scale);
         rUp = new Rectangle(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()-160, 208, 320*scale);
+        plusScore = new Rectangle(Gdx.graphics.getWidth()+(208*0.1f),0,1,Gdx.graphics.getHeight());
         up = new Sprite(ResourceManager.getTexture("pipe"));
         down = new Sprite(ResourceManager.getTexture("pipe"));
         up.flip(false,true);
@@ -56,6 +55,7 @@ public class PipePrefab {
     public void update(float dt){
         rDown.x -= vx * dt;
         rUp.x -= vx * dt;
+        plusScore.x -= vx * dt;
         if (rDown.x < -(52*scale))
             Game.pipePrefab.removeValue(this, false);
     }

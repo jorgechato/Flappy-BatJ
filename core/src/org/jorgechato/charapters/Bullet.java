@@ -16,7 +16,8 @@ import org.jorgechato.util.Constants;
 public class Bullet {
     public Rectangle rectangle;
     Sprite sprite;
-    float stateTime,vx = 550;
+    float stateTime;
+    public static float vx = 550;
 
     public Bullet() {
         this.rectangle = new Rectangle(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), 53* Constants.scale,46*Constants.scale);

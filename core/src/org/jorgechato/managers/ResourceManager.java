@@ -35,6 +35,10 @@ public class ResourceManager {
         textures.put("gameOver", new Texture(Gdx.files.internal("textures/game_over.png")));
         textures.put("new", new Texture(Gdx.files.internal("textures/new.png")));
         textures.put("old", new Texture(Gdx.files.internal("textures/old.png")));
+        textures.put("shut0", new Texture(Gdx.files.internal("textures/shut0.png")));
+        textures.put("shut1", new Texture(Gdx.files.internal("textures/shut1.png")));
+        textures.put("shut2", new Texture(Gdx.files.internal("textures/shut2.png")));
+        textures.put("shut3", new Texture(Gdx.files.internal("textures/shut3.png")));
 
         sound = new HashMap<>();
         sound.put("hit", Gdx.audio.newSound(Gdx.files.internal("sounds/sfx_hit.ogg")));

@@ -43,20 +43,19 @@ public class MainMenu implements Screen {
         tap = ResourceManager.getTexture("tap");
         play = new ImageButton(new TextureRegionDrawable(new TextureRegion(ResourceManager.getTexture("play"))));
         score = new ImageButton(new TextureRegionDrawable(new TextureRegion(ResourceManager.getTexture("btscore"))));
-
         play.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
                 stage.dispose();
+                dispose();
                 draculApp.setScreen(new Game(draculApp));
             }
         });
         score.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
                 stage.dispose();
+                dispose();
                 draculApp.setScreen(new Score(draculApp));
             }
         });
@@ -64,6 +63,10 @@ public class MainMenu implements Screen {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         play.setSize(104*Constants.scale,58*Constants.scale);
         score.setSize(104*Constants.scale,58*Constants.scale);
+
+        play.getImageCell().expand().fill();
+        score.getImageCell().expand().fill();
+
         play.setPosition(Gdx.graphics.getWidth() * 0.5f - (play.getHeight()*0.85f), Gdx.graphics.getHeight() * 0.4f);
         score.setPosition(Gdx.graphics.getWidth() * 0.5f - (score.getHeight()*0.85f), Gdx.graphics.getHeight() * 0.4f-play.getHeight()-2* Constants.scale);
         b = new SpriteBatch();

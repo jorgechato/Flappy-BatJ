@@ -11,10 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import org.jorgechato.DraculApp;
-import org.jorgechato.charapters.Bullet;
-import org.jorgechato.charapters.PipePrefab;
-import org.jorgechato.charapters.Player;
-import org.jorgechato.charapters.Pokeball;
+import org.jorgechato.charapters.*;
 import org.jorgechato.managers.ResourceManager;
 import org.jorgechato.util.Constants;
 import org.jorgechato.util.Live;
@@ -28,11 +25,13 @@ public class Game implements Screen{
     public static Array<PipePrefab> pipePrefab;
     public static Array<Bullet> bullet;
     public static Array<Pokeball> pokeball;
+    public static Array<Shut> shut;
     ShapeRenderer shapeRenderer;
     public int lives = 3;
     PipePrefab pipePrefabOld;
+    Shut shutOld;
+    Pokeball pokeballOld;
     final DraculApp draculApp;
-    int bulletLevel = 8;
     static BitmapFont font;
     Live[] live;
 
@@ -40,6 +39,7 @@ public class Game implements Screen{
         this.draculApp = draculApp;
         Timer.instance().clear();
         Constants.score = 0;
+        System.out.println(Gdx.graphics.getDeltaTime());
     }
 
     @Override
@@ -59,6 +59,7 @@ public class Game implements Screen{
         pipePrefab = new Array<>();
         bullet = new Array<>();
         pokeball = new Array<>();
+        shut = new Array<>();
 
         shapeRenderer = new ShapeRenderer();
         Timer.schedule(new Timer.Task() {
@@ -73,7 +74,7 @@ public class Game implements Screen{
             public void run() {
                 bullet.add(new Bullet());
             }
-        },5,bulletLevel);
+        },5,8);
 
         Timer.schedule(new Timer.Task() {
             @Override
@@ -93,6 +94,9 @@ public class Game implements Screen{
             bullet1.update(delta);
         for (Pokeball pokeball1 : pokeball)
             pokeball1.update(delta);
+        for (Shut shut1 : shut)
+            shut1.update(delta);
+
         colision();
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         b.begin();
@@ -101,6 +105,8 @@ public class Game implements Screen{
             pipePrefab1.draw(b);
         for (Bullet bullet1 : bullet)
             bullet1.draw(b);
+        for (Shut shut1 : shut)
+            shut1.draw(b);
 
         b.draw(footer, 0, 0, Gdx.graphics.getWidth(), 112 * Constants.scale);
 
@@ -113,15 +119,6 @@ public class Game implements Screen{
         live[1].sprite.draw(b);
         live[2].sprite.draw(b);
         b.end();
-        /*
-        shapeRenderer.setAutoShapeType(true);
-        shapeRenderer.begin();
-        for (PipePrefab pipePrefab1 : pipePrefab) {
-            shapeRenderer.rect(0,0,pipePrefab1.rDown.x,pipePrefab1.rDown.y);
-            shapeRenderer.rect(0,0,pipePrefab1.rUp.x,pipePrefab1.rUp.y);
-            shapeRenderer.rect(0,0,player.rectangle.x,player.rectangle.y);
-        }
-        shapeRenderer.end();*/
     }
 
     private void colision() {
@@ -134,22 +131,49 @@ public class Game implements Screen{
                 ResourceManager.getSound("point").play();
                 pipePrefabOld = pipePrefab1;
                 if (Constants.score % 5 == 0){
-                    if (bulletLevel > 1)
-                        bulletLevel = 1;
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            bullet.add(new Bullet());
+                        }
+                    },1,8);
                 }
             }
         }
 
-        for (Bullet bullet1 : bullet)
-            if (bullet1.rectangle.overlaps(player.rectangle)){
+        for (Shut shut1 : shut) {
+            if (shut1.rectangle.overlaps(player.rectangle) && !shut1.equals(shutOld)) {
+                if (lives < 1)
+                    die();
+                shutOld = shut1;
+                player.soundPlayer("hit");
+                shut1.destroy();
+                lives--;
+                live[lives].sprite.setTexture(ResourceManager.getTexture("dead"));
+                if (lives < 1)
+                    die();
+            }
+        }
+
+        for (Bullet bullet1 : bullet) {
+            if (bullet1.rectangle.overlaps(player.rectangle)) {
+                if (lives < 1)
+                    die();
                 player.soundPlayer("hit");
                 bullet1.destroy();
                 lives--;
                 live[lives].sprite.setTexture(ResourceManager.getTexture("dead"));
                 if (lives < 1)
                     die();
-
             }
+        }
+
+        for (Pokeball pokeball1 : pokeball){
+            if (pokeball1.rectangle.overlaps(player.rectangle) && !pokeball1.equals(pokeballOld)){
+                pokeballOld = pokeball1;
+                shut.add(new Shut());
+            }
+        }
     }
 
     private void die() {
@@ -159,7 +183,7 @@ public class Game implements Screen{
         player.died();
         dispose();
         font.dispose();
-        draculApp.setScreen(new MainMenu(draculApp));
+        draculApp.setScreen(new Score(draculApp));
     }
 
     @Override

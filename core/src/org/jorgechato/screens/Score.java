@@ -52,9 +52,10 @@ public class Score implements Screen {
         play.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
+                stage.dispose();
                 hightScore.dispose();
                 myScore.dispose();
+                dispose();
                 draculApp.setScreen(new Game(draculApp));
             }
         });
@@ -62,6 +63,8 @@ public class Score implements Screen {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         play.setPosition(Gdx.graphics.getWidth() * 0.5f - (104*Constants.scale * 0.5f), Gdx.graphics.getHeight() * 0.5f-114*Constants.scale*.5f-58*Constants.scale*.5f);
         play.setSize(104*Constants.scale,58*Constants.scale);
+        play.getImageCell().expand().fill();
+
         b = new SpriteBatch();
 
         stage.addActor(play);

@@ -16,11 +16,11 @@ import org.jorgechato.util.Constants;
  * Created by Orggue on 04/03/15.
  */
 public class Player {
-    public Rectangle rectangle;
+    public static Rectangle rectangle;
     Sprite sprite;
     Animation animation;
-    float vy,stateTime,gravity = 850;
     TextureRegion [] textureRegions;
+    float vy,stateTime,gravity = 280*Constants.scale;
     long timePlayer;
     boolean jump, touched;
 
@@ -49,7 +49,7 @@ public class Player {
         animation.setPlayMode(Animation.PlayMode.LOOP);
         sprite.setSize(53*Constants.scale, 46*Constants.scale);
 
-        sprite.setPosition(Gdx.graphics.getWidth() * 0.5f - (sprite.getHeight() * 0.85f), Gdx.graphics.getHeight() * 0.4f);
+        sprite.setPosition(Gdx.graphics.getWidth() * 0.5f - (sprite.getWidth() * .5f), Gdx.graphics.getHeight() * 0.4f);
     }
 
     public void update(float dt){
@@ -66,7 +66,7 @@ public class Player {
             touched = false;
         }
 
-        if (TimeUtils.millis()-timePlayer > 300)
+        if (TimeUtils.millis()-timePlayer > 20000*dt)
             jump = false;
 
         if (jump) {
@@ -94,7 +94,7 @@ public class Player {
     public void instructionDraw(SpriteBatch sb){
         sprite.flip(true,false);
         sprite.draw(sb);
-        sprite.setPosition(Gdx.graphics.getWidth() * 0.5f - (Gdx.graphics.getWidth() * 0.10f), Gdx.graphics.getHeight() * 0.5f + (Gdx.graphics.getWidth() * 0.15f) + 80 * Constants.scale);
+        sprite.setPosition(Gdx.graphics.getWidth() * .5f - (sprite.getWidth() * .5f), Gdx.graphics.getHeight() * 0.5f + (Gdx.graphics.getWidth() * 0.15f) + 80 * Constants.scale);
     }
 
     public void instructionUpdate(float dt){

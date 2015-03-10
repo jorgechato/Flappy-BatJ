@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.math.Rectangle;
 import org.jorgechato.managers.ResourceManager;
 import org.jorgechato.screens.Game;
+import org.jorgechato.util.Constants;
 
 /**
  * Created by Orggue on 07/03/15.
@@ -16,13 +17,9 @@ public class Bullet {
     public Rectangle rectangle;
     Sprite sprite;
     float stateTime,vx = 550;
-    short scale = 1;
 
     public Bullet() {
-        if(Gdx.app.getType()== Application.ApplicationType.Android)
-            scale = 4;
-
-        this.rectangle = new Rectangle(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), 53*scale,46*scale);
+        this.rectangle = new Rectangle(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), 53* Constants.scale,46*Constants.scale);
         stateTime = 0;
         sprite = new Sprite(ResourceManager.getTexture("bullet"));
         sprite.setSize(rectangle.width*0.7f, rectangle.height*0.7f);
@@ -33,7 +30,7 @@ public class Bullet {
 
     private void random() {
         RandomXS128 ran = new RandomXS128();
-        rectangle.y -= ran.nextInt(Gdx.graphics.getHeight()-(120+53*scale))+(53*scale)*2;
+        rectangle.y -= ran.nextInt((int) (Gdx.graphics.getHeight()-(120*Constants.scale)))+(46*Constants.scale);
     }
 
     public void draw(SpriteBatch sb){
@@ -43,7 +40,7 @@ public class Bullet {
 
     public void update(float dt){
         rectangle.x -= vx * dt;
-        if (rectangle.x < -(52*scale))
+        if (rectangle.x < -(52*Constants.scale))
             Game.bullet.removeValue(this, false);
     }
 

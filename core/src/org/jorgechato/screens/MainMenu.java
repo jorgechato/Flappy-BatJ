@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import org.jorgechato.DraculApp;
 import org.jorgechato.charapters.Player;
 import org.jorgechato.managers.ResourceManager;
+import org.jorgechato.util.Constants;
 
 /**
  * Created by Orggue on 09/03/15.
@@ -25,7 +26,6 @@ import org.jorgechato.managers.ResourceManager;
 public class MainMenu implements Screen {
     Texture background, footer, tap;
     ImageButton play,score;
-    short scale = 1;
     SpriteBatch b;
     final DraculApp draculApp;
     Stage stage;
@@ -37,9 +37,6 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
-        if(Gdx.app.getType()== Application.ApplicationType.Android)
-            scale = 4;
-
         player = new Player();
         background = ResourceManager.getTexture("background");
         footer = ResourceManager.getTexture("footer");
@@ -65,8 +62,10 @@ public class MainMenu implements Screen {
         });
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        play.setSize(104*Constants.scale,58*Constants.scale);
+        score.setSize(104*Constants.scale,58*Constants.scale);
         play.setPosition(Gdx.graphics.getWidth() * 0.5f - (play.getHeight()*0.85f), Gdx.graphics.getHeight() * 0.4f);
-        score.setPosition(Gdx.graphics.getWidth() * 0.5f - (score.getHeight()*0.85f), Gdx.graphics.getHeight() * 0.4f-play.getHeight()-2*scale);
+        score.setPosition(Gdx.graphics.getWidth() * 0.5f - (score.getHeight()*0.85f), Gdx.graphics.getHeight() * 0.4f-play.getHeight()-2* Constants.scale);
         b = new SpriteBatch();
 
         stage.addActor(play);
@@ -82,8 +81,8 @@ public class MainMenu implements Screen {
         player.instructionUpdate(delta);
         b.begin();
         b.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        b.draw(footer, 0, -112, Gdx.graphics.getWidth(), 112 * scale);
-        b.draw(tap, Gdx.graphics.getWidth() * 0.5f - ( 114 * scale*0.5f), Gdx.graphics.getHeight() * 0.5f + (Gdx.graphics.getWidth() * 0.15f), 114 * scale, 60 * scale);
+        b.draw(footer, 0, 0, Gdx.graphics.getWidth(), 112 * Constants.scale);
+        b.draw(tap, Gdx.graphics.getWidth() * 0.5f - ( 114 * Constants.scale*0.5f), Gdx.graphics.getHeight() * 0.5f + (Gdx.graphics.getWidth() * 0.15f), 114 * Constants.scale, 60 * Constants.scale);
         player.instructionDraw(b);
         b.end();
         stage.draw();

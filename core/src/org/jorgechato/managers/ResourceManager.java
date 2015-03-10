@@ -1,6 +1,7 @@
 package org.jorgechato.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -12,6 +13,8 @@ import java.util.HashMap;
 public class ResourceManager {
     static HashMap<String,Texture> textures;
     static HashMap<String, Sound> sound;
+    public static Preferences prefs;
+
 
     public static void loadRes(){
         textures = new HashMap<>();
@@ -29,6 +32,9 @@ public class ResourceManager {
         textures.put("btscore", new Texture(Gdx.files.internal("textures/btscore.png")));
         textures.put("live", new Texture(Gdx.files.internal("textures/live.png")));
         textures.put("dead", new Texture(Gdx.files.internal("textures/dead.png")));
+        textures.put("gameOver", new Texture(Gdx.files.internal("textures/game_over.png")));
+        textures.put("new", new Texture(Gdx.files.internal("textures/new.png")));
+        textures.put("old", new Texture(Gdx.files.internal("textures/old.png")));
 
         sound = new HashMap<>();
         sound.put("hit", Gdx.audio.newSound(Gdx.files.internal("sounds/sfx_hit.ogg")));
@@ -36,6 +42,11 @@ public class ResourceManager {
         sound.put("swooshing", Gdx.audio.newSound(Gdx.files.internal("sounds/sfx_swooshing.ogg")));
         sound.put("die", Gdx.audio.newSound(Gdx.files.internal("sounds/sfx_die.ogg")));
         sound.put("wing", Gdx.audio.newSound(Gdx.files.internal("sounds/sfx_wing.ogg")));
+
+        prefs = Gdx.app.getPreferences("Flappy_BatJ");
+        if (!prefs.contains("highScore")) {
+            prefs.putInteger("highScore", 0);
+        }
     }
 
     public static Texture getTexture(String key){
@@ -45,4 +56,14 @@ public class ResourceManager {
     public static Sound getSound(String key){
         return sound.get(key);
     }
+
+    public static void setHighScore(int val) {
+        prefs.putInteger("highScore", val);
+        prefs.flush();
+    }
+
+    public static int getHighScore() {
+        return prefs.getInteger("highScore");
+    }
+
 }

@@ -1,6 +1,5 @@
 package org.jorgechato.screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,6 +16,7 @@ import org.jorgechato.charapters.PipePrefab;
 import org.jorgechato.charapters.Player;
 import org.jorgechato.charapters.Pokeball;
 import org.jorgechato.managers.ResourceManager;
+import org.jorgechato.util.Constants;
 import org.jorgechato.util.Live;
 
 
@@ -29,8 +29,7 @@ public class Game implements Screen{
     public static Array<Bullet> bullet;
     public static Array<Pokeball> pokeball;
     ShapeRenderer shapeRenderer;
-    short scale = 1;
-    public int score = 0, lives = 3;
+    public int lives = 3;
     PipePrefab pipePrefabOld;
     final DraculApp draculApp;
     int bulletLevel = 8;
@@ -40,22 +39,20 @@ public class Game implements Screen{
     public Game(DraculApp draculApp) {
         this.draculApp = draculApp;
         Timer.instance().clear();
+        Constants.score = 0;
     }
 
     @Override
     public void show() {
-        if(Gdx.app.getType()== Application.ApplicationType.Android)
-            scale = 4;
-
         live = new Live[3];
-        live[0] = new Live(36,36*2);
-        live[1] = new Live(36+6+36*scale*.8f,36*2);
-        live[2] = new Live(36+6+6+36*scale*.8f*2,36*2);
+        live[0] = new Live(36,36*Constants.scale);
+        live[1] = new Live(36+6+36* Constants.scale*.8f,36*Constants.scale);
+        live[2] = new Live(36+6+6+36*Constants.scale*.8f*2,36*Constants.scale);
 
         font = new BitmapFont(Gdx.files.internal("font/text.fnt"));
-        font.setScale(scale*0.5f, scale*0.5f);
+        font.setScale(Constants.scale*.5f, Constants.scale*.5f);
         b = new SpriteBatch();
-        player = new Player(new Rectangle(Gdx.graphics.getWidth()*0.5f-Gdx.graphics.getWidth()*0.18f,Gdx.graphics.getHeight()*0.5f+Gdx.graphics.getHeight()*0.25f, 53*scale-53,46*scale-46));
+        player = new Player(new Rectangle(Gdx.graphics.getWidth()*0.5f-Gdx.graphics.getWidth()*0.18f,Gdx.graphics.getHeight()*0.5f+Gdx.graphics.getHeight()*0.25f, 53*Constants.scale-53*Constants.scale*.25f,46*Constants.scale-46*Constants.scale*.25f));
         background = ResourceManager.getTexture("background");
         footer = ResourceManager.getTexture("footer");
 
@@ -105,13 +102,13 @@ public class Game implements Screen{
         for (Bullet bullet1 : bullet)
             bullet1.draw(b);
 
-        b.draw(footer, 0, -112, Gdx.graphics.getWidth(), 112 * scale);
+        b.draw(footer, 0, 0, Gdx.graphics.getWidth(), 112 * Constants.scale);
 
         for (Pokeball pokeball1 : pokeball)
             pokeball1.draw(b);
 
         player.draw(b);
-        font.draw(b, "" + score, Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()-25*scale);
+        font.draw(b, "" + Constants.score, Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()-25*Constants.scale);
         live[0].sprite.draw(b);
         live[1].sprite.draw(b);
         live[2].sprite.draw(b);
@@ -130,13 +127,13 @@ public class Game implements Screen{
     private void colision() {
         for (PipePrefab pipePrefab1 : pipePrefab){
             if (pipePrefab1.rUp.overlaps(player.rectangle) || pipePrefab1.rDown.overlaps(player.rectangle)
-                    || player.rectangle.y < 112*scale-112 || player.rectangle.y > Gdx.graphics.getHeight()){
+                    || player.rectangle.y < 112*Constants.scale-112*Constants.scale*.25f || player.rectangle.y > Gdx.graphics.getHeight()-46*Constants.scale){
                 die();
             }else if (pipePrefab1.plusScore.overlaps(player.rectangle) && !pipePrefab1.equals(pipePrefabOld)) {
-                score++;
+                Constants.score++;
                 ResourceManager.getSound("point").play();
                 pipePrefabOld = pipePrefab1;
-                if (score % 5 == 0){
+                if (Constants.score % 5 == 0){
                     if (bulletLevel > 1)
                         bulletLevel = 1;
                 }
@@ -149,13 +146,16 @@ public class Game implements Screen{
                 bullet1.destroy();
                 lives--;
                 live[lives].sprite.setTexture(ResourceManager.getTexture("dead"));
-                if (lives < 0)
+                if (lives < 1)
                     die();
 
             }
     }
 
     private void die() {
+        if (Constants.score > ResourceManager.getHighScore()) {
+            ResourceManager.setHighScore(Constants.score);
+        }
         player.died();
         dispose();
         font.dispose();

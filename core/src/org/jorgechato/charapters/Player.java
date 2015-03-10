@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.jorgechato.managers.ResourceManager;
+import org.jorgechato.util.Constants;
 
 /**
  * Created by Orggue on 04/03/15.
@@ -20,14 +21,10 @@ public class Player {
     Animation animation;
     float vy,stateTime,gravity = 850;
     TextureRegion [] textureRegions;
-    short scale = 1;
     long timePlayer;
     boolean jump, touched;
 
     public Player(Rectangle rectangle) {
-        if(Gdx.app.getType()== Application.ApplicationType.Android)
-            scale = 4;
-
         stateTime = 0;
         timePlayer = 0;
         this.rectangle = rectangle;
@@ -39,13 +36,10 @@ public class Player {
         animation = new Animation(1/7f,textureRegions);
         animation.setPlayMode(Animation.PlayMode.LOOP);
         sprite.setPosition(this.rectangle.x, this.rectangle.y);
-        sprite.setSize(53 * scale, 46 * scale);
+        sprite.setSize(53 * Constants.scale, 46 * Constants.scale);
     }
 
     public Player() {
-        if(Gdx.app.getType()== Application.ApplicationType.Android)
-            scale = 4;
-
         sprite = new Sprite();
         textureRegions = new TextureRegion[3];
         textureRegions[0] = new TextureRegion(ResourceManager.getTexture("bat1"));
@@ -53,7 +47,7 @@ public class Player {
         textureRegions[2] = new TextureRegion(ResourceManager.getTexture("bat3"));
         animation = new Animation(1/7f,textureRegions);
         animation.setPlayMode(Animation.PlayMode.LOOP);
-        sprite.setSize(53*scale, 46*scale);
+        sprite.setSize(53*Constants.scale, 46*Constants.scale);
 
         sprite.setPosition(Gdx.graphics.getWidth() * 0.5f - (sprite.getHeight() * 0.85f), Gdx.graphics.getHeight() * 0.4f);
     }
@@ -100,7 +94,7 @@ public class Player {
     public void instructionDraw(SpriteBatch sb){
         sprite.flip(true,false);
         sprite.draw(sb);
-        sprite.setPosition(Gdx.graphics.getWidth() * 0.5f - (Gdx.graphics.getWidth() * 0.10f), Gdx.graphics.getHeight() * 0.5f + (Gdx.graphics.getWidth() * 0.15f) + 80 * scale);
+        sprite.setPosition(Gdx.graphics.getWidth() * 0.5f - (Gdx.graphics.getWidth() * 0.10f), Gdx.graphics.getHeight() * 0.5f + (Gdx.graphics.getWidth() * 0.15f) + 80 * Constants.scale);
     }
 
     public void instructionUpdate(float dt){

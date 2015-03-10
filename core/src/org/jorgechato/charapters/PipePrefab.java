@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.math.Rectangle;
 import org.jorgechato.managers.ResourceManager;
 import org.jorgechato.screens.Game;
+import org.jorgechato.util.Constants;
 
 
 /**
@@ -17,14 +18,10 @@ public class PipePrefab {
     float vx = 300;
     Sprite up, down;
     public Rectangle rUp, rDown, plusScore;
-    short scale = 1;
 
     public PipePrefab() {
-        if(Gdx.app.getType()== Application.ApplicationType.Android)
-            scale = 4;
-
-        rDown = new Rectangle(Gdx.graphics.getWidth() , -160, 208, 320*scale);
-        rUp = new Rectangle(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()-160, 208, 320*scale);
+        rDown = new Rectangle(Gdx.graphics.getWidth() , -320*Constants.scale*0.5f, 52*Constants.scale+52*Constants.scale*.4f, 320*Constants.scale+320*Constants.scale*.4f);
+        rUp = new Rectangle(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()-320*Constants.scale*0.5f, 52*Constants.scale+52*Constants.scale*.4f, 320*Constants.scale+320*Constants.scale*.4f);
         plusScore = new Rectangle(Gdx.graphics.getWidth()+(208*0.5f),0,1,Gdx.graphics.getHeight());
         up = new Sprite(ResourceManager.getTexture("pipe"));
         down = new Sprite(ResourceManager.getTexture("pipe"));
@@ -40,9 +37,9 @@ public class PipePrefab {
 
     public void randomPosition(){
         RandomXS128 ran = new RandomXS128();
-        int equal = ran.nextInt(120)*scale;
-        rDown.y = -equal-160;
-        rUp.y = Gdx.graphics.getHeight()-160-equal;
+        float equal = ran.nextInt((int) (120*Constants.scale));
+        rDown.y = -equal-320* Constants.scale*0.5f;
+        rUp.y = Gdx.graphics.getHeight()-equal-320*Constants.scale*0.5f;
     }
 
     public void draw(SpriteBatch sb){
@@ -56,7 +53,7 @@ public class PipePrefab {
         rDown.x -= vx * dt;
         rUp.x -= vx * dt;
         plusScore.x -= vx * dt;
-        if (rDown.x < -(52*scale))
+        if (rDown.x < -(52*Constants.scale+52*Constants.scale*.4f))
             Game.pipePrefab.removeValue(this, false);
     }
 }

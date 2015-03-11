@@ -59,7 +59,8 @@ public class Player {
             if (!touched) {
                 jump = true;
                 timePlayer = TimeUtils.millis();
-                soundPlayer("swooshing");
+                if (ResourceManager.isMusic())
+                    soundPlayer("swooshing");
             }
             touched = true;
         }else {
@@ -103,10 +104,12 @@ public class Player {
     }
 
     public void died() {
-        soundPlayer("hit");
+        if (ResourceManager.isMusic())
+            soundPlayer("hit");
     }
 
     public void soundPlayer(String key){
-        ResourceManager.getSound(key).play();
+        if (ResourceManager.isMusic())
+            ResourceManager.getSound(key).play();
     }
 }

@@ -39,7 +39,6 @@ public class Game implements Screen{
         this.draculApp = draculApp;
         Timer.instance().clear();
         Constants.score = 0;
-        System.out.println(Gdx.graphics.getDeltaTime());
     }
 
     @Override
@@ -128,7 +127,8 @@ public class Game implements Screen{
                 die();
             }else if (pipePrefab1.plusScore.overlaps(player.rectangle) && !pipePrefab1.equals(pipePrefabOld)) {
                 Constants.score++;
-                ResourceManager.getSound("point").play();
+                if (ResourceManager.isMusic())
+                    ResourceManager.getSound("point").play();
                 pipePrefabOld = pipePrefab1;
                 if (Constants.score % 5 == 0){
                     Timer.schedule(new Timer.Task() {
@@ -146,7 +146,8 @@ public class Game implements Screen{
                 if (lives < 1)
                     die();
                 shutOld = shut1;
-                player.soundPlayer("hit");
+                if (ResourceManager.isMusic())
+                    player.soundPlayer("hit");
                 shut1.destroy();
                 lives--;
                 live[lives].sprite.setTexture(ResourceManager.getTexture("dead"));
@@ -159,7 +160,8 @@ public class Game implements Screen{
             if (bullet1.rectangle.overlaps(player.rectangle)) {
                 if (lives < 1)
                     die();
-                player.soundPlayer("hit");
+                if (ResourceManager.isMusic())
+                    player.soundPlayer("hit");
                 bullet1.destroy();
                 lives--;
                 live[lives].sprite.setTexture(ResourceManager.getTexture("dead"));
@@ -177,7 +179,7 @@ public class Game implements Screen{
     }
 
     private void die() {
-        if (Constants.score > ResourceManager.getHighScore()) {
+        if (Constants.score > ResourceManager.getHighScore() && ResourceManager.isSave()) {
             ResourceManager.setHighScore(Constants.score);
         }
         player.died();

@@ -39,6 +39,10 @@ public class ResourceManager {
         textures.put("shut1", new Texture(Gdx.files.internal("textures/shut1.png")));
         textures.put("shut2", new Texture(Gdx.files.internal("textures/shut2.png")));
         textures.put("shut3", new Texture(Gdx.files.internal("textures/shut3.png")));
+        textures.put("music", new Texture(Gdx.files.internal("textures/music.png")));
+        textures.put("save", new Texture(Gdx.files.internal("textures/save.png")));
+        textures.put("noMusic", new Texture(Gdx.files.internal("textures/no_music.png")));
+        textures.put("noSave", new Texture(Gdx.files.internal("textures/no_save.png")));
 
         sound = new HashMap<>();
         sound.put("hit", Gdx.audio.newSound(Gdx.files.internal("sounds/sfx_hit.ogg")));
@@ -50,6 +54,16 @@ public class ResourceManager {
         prefs = Gdx.app.getPreferences("Flappy_BatJ");
         if (!prefs.contains("highScore")) {
             prefs.putInteger("highScore", 0);
+        }
+
+        prefs = Gdx.app.getPreferences("isMusic");
+        if (!prefs.contains("isMusic")) {
+            prefs.putBoolean("isMusic", true);
+        }
+
+        prefs = Gdx.app.getPreferences("isSave");
+        if (!prefs.contains("isSave")) {
+            prefs.putBoolean("isSave", true);
         }
     }
 
@@ -66,8 +80,25 @@ public class ResourceManager {
         prefs.flush();
     }
 
+    public static void setSave(boolean val) {
+        prefs.putBoolean("isSave", val);
+        prefs.flush();
+    }
+
+    public static void setMusic(boolean val) {
+        prefs.putBoolean("isMusic", val);
+        prefs.flush();
+    }
+
     public static int getHighScore() {
         return prefs.getInteger("highScore");
+    }
+
+    public static boolean isSave() {
+        return prefs.getBoolean("isSave");
+    }
+    public static boolean isMusic() {
+        return prefs.getBoolean("isMusic");
     }
 
 }
